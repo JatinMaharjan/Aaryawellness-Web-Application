@@ -16,23 +16,22 @@
         $source = '';
     }
 
-    if($source=='edit_contact'){
-        include "edit_contact.php";
+    if($source=='edit_image'){
+        include "edit_image.php";
     }
-    if($source=='add_contact'){
-        include "add_contact.php";
+    if($source=='add_image'){
+        include "add_image.php";
     }
 
 ?>
         <div class="container-fluid">
 
-            <h2 class="text-center mt-4">All Contact</h2> 
-            <span><a href='view_all_contacts.php?source=add_contact'>Add New Contact</a></span>      
+            <h2 class="text-center mt-4">All Image</h2> 
+            <span><a href='view_all_images.php?source=add_image'>Add New Image</a></span>      
             <table class="table table-bordered table-hover">
             <thead>
             <tr>
                 <th>ID</th>
-                <th>Contact no</th>
                 <th>Document</th>
                 <th>Edit</th>
                 <th>Delete</th>
@@ -42,23 +41,21 @@
 
             <?php
             if (!is_admin($_SESSION['username'])){
-            $query = "select * from contacts where contact_user_id={$_SESSION['user_id']}";
+            $query = "select * from images where image_user_id={$_SESSION['user_id']}";
             } else {
-                $query = "select * from contacts";
+                $query = "select * from images";
             }
-            $sel_contacts = mysqli_query($connection, $query);
+            $sel_images = mysqli_query($connection, $query);
 
-        while($row = mysqli_fetch_assoc($sel_contacts)) {
-            $contact_id = $row['contact_id'];
-            $contact_no = $row['contact_no'];
-            $contact_document = $row['contact_document'];
+        while($row = mysqli_fetch_assoc($sel_images)) {
+            $image_id = $row['image_id'];
+            $image_document = $row['image_document'];
 
                 echo "<tr>";
-                echo "<td>$contact_id</td>";
-                echo "<td>$contact_no</td>";
+                echo "<td>$image_id</td>";
                 echo "<td>doc</td>";
-                echo "<td><a href='view_all_contacts.php?source=edit_contact&edit_contact={$contact_id}'>Edit</a></td>";
-                echo "<td><a href='view_all_contacts.php?delete={$contact_id}'>Delete</a></td>";
+                echo "<td><a href='view_all_images.php?source=edit_image&edit_image={$image_id}'>Edit</a></td>";
+                echo "<td><a href='view_all_images.php?delete={$image_id}'>Delete</a></td>";
                 echo "</tr>";
         }
 
@@ -71,15 +68,15 @@
 
 
 <?php
-//delete contact query
+//delete image query
 if(isset($_GET['delete'])) {
-    $log_action="contact deleted";
-    $the_contact_id = mysqli_real_escape_string($connection,$_GET['delete']);
+    $log_action="image deleted";
+    $the_image_id = mysqli_real_escape_string($connection,$_GET['delete']);
 
-    $query = "DELETE FROM contacts where contact_id = {$the_contact_id} ";
+    $query = "DELETE FROM images where image_id = {$the_image_id} ";
     create_log($_SESSION['username'], $_SESSION['user_id'], $log_action);
-    $del_contact_query = mysqli_query($connection, $query);
-    header("location: view_all_contacts.php");
+    $del_image_query = mysqli_query($connection, $query);
+    header("location: view_all_images.php");
 
 }
 
